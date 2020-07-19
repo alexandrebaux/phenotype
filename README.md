@@ -79,7 +79,7 @@ myFirstPhenotype.run();
 // The errorValue is like a distance between the result you expect and what you get. 
 myFirstPhenotype.error(errorValue);
 
-// This line will adjust the value return by all genome() function using a score.
+// This line will adjust the value returned by the all genome() function using a score as a reward.
 myFirstPhenotype.score(scoreValue);
 
 // This line return an array of value with the current best parameters
