@@ -1,6 +1,6 @@
 # Phenotype.js
 
-phenotype.js is a simple optimizer function based on a genetic algorithm.
+phenotype.js is a simple optimization function based on a genetic algorithm.
 
 ## Simple Example
 ```javascript
