@@ -1,36 +1,29 @@
 var phenotype = function (ph,opt) {    
     var opt = (opt) ? opt : {};
     var lErr = Infinity;
-    var creature = function() {
-        var it = 0;
-        var adn = [];        
-        var rd = function(){ return Math.random(); };
-        var dn = function(){ 
-            if (!adn[it]) { adn.push(rd()); }
-            var r = adn[it]; it++;
+    var rd = function(){ return Math.random(); };
+    var Creature = function() {
+        this.it = 0;
+        this.adn = [];        
+        this.dn = function(){ 
+            if (!this.adn[this.it]) { this.adn.push(rd()); }
+            var r = this.adn[this.it]; this.it++;
             return r;
         };        
-        var rst = function(){ it = 0; };
-        return {
-            adn: adn,
-            dn: dn,
-            rst: rst,
-            rd: rd,
-            err: lErr
-        };
+        this.rst = function(){ this.it = 0; };
     };
     // TODO - explain the effect of changing the option 'genlength' ( Length of the genôme )
     var genlength = (opt.genlength) ? opt.genlength : 1;
     var pheno = function(cr) {
         cr.rst();
-        ph(cr.dn);
+        ph(cr.dn.bind(cr));
     };
     // TODO - explain the effect of changing the option 'popsize' ( Number of creature )
     var popsize = (opt.popsize) ? opt.popsize : 100;
     var popu = [];
     var creatid = 0;
     for (let index = 0; index < popsize; index++) {
-        popu.push(creature());
+        popu.push(new Creature());
     }
     // TODO - explain the effect of changing the option 'mutation' ( Level of detail used for changing a value for a parameter)
     var mutation = (opt.mutation) ? opt.mutation : 1000;
@@ -52,7 +45,7 @@ var phenotype = function (ph,opt) {
                 var cadn = popu[0].adn;
                 var nomut = ~~(nkill*0.5);           
                 for (var i = 0; i < nkill; i++) {
-                    var ncreature = creature();                                  
+                    var ncreature = new Creature();                                  
                     // TODO - error me if all creature have not the same dna length ?
                     for (var z = 0; z < cadn.length; z+=genlength) {
                         var rind = ~~(nrest*Math.random());
