@@ -2,77 +2,62 @@
 
 phenotype.js is a simple optimization function based on a genetic algorithm.
 
-## Simple Example
-```javascript
-var currentValue = 156;
-var perfectValue = 1990;
 
-// We create an optimizer.
+## Example
+
+```javascript
+
+var currentValue = 123; 
+var perfectValue = 12345;
+
+// We create a phenotype.
 var myFirstPhenotype = phenotype(function(genome) {
-    
-    
-    // Quand myFirstPhenotype.run() est executé
-    // When myFirstPhenotype.run() is executed
-        
-        // On change la valeur courante
-        // genome() retourne un nombre à virgule entre 0 et 1
-        // We change the currentValue
-        // genome() return a float between 0 and 1.
-        currentValue = genome() * 100000; 
+
+    // genome() return a float between 0 and 1.
+    currentValue = genome() * 100000; 
  
 });
 
-// Ici on répéte le code 10000 fois.
-// We repeat this part 10000 times.
+// 10000 Steps 
 for (var i=0; i < 10000; i++) {
-
-    // On affiche la valeur de la variable currentValue dans la console de développement.
-    // La première fois (currentValue = 156)
-    // par la suite la valeur vas ce rapprocher de la variable perfectValue.
     
-    // We show the value in the developement console.
-    // The first time (currentValue = 156)
-    // after this the value will go to the value of perfectValue
-    console.log(currentValue);
-
-    // On execute la fonction présente dans le phenotype ci-dessus.
-    // Ainsi la variable currentValue prend une certaine valeur.
-    // We execute the function in the phenotype above.
-    // Like this currentValue take a certain value.
+    // We run the phenotype
+    myFirstPhenotype.run();
     
-    myFirstPhenotype.run()
-
-    // On calcule la distance entre la bonne valeur est la valeur courante
     // We calculate the distance between the good value and the current value
     var errorValue = Math.abs(currentValue - perfectValue);
+    
+    // We give the error value to the phenotype
     myFirstPhenotype.error(errorValue);    
 
 }
 
+console.log(currentValue); // 1990
+
 ```
 
-## Here a simple documentation ( It's not an example )
+## Documentation
 
 ```javascript
 
 // Creation of a simples variables
-var reglage1 = 0;
-var reglage2 = 0;
-var reglage3 = 0;
+var settings_1 = 0;
+var settings_2 = 0;
+var settings_3 = 0;
 
 // Creation of a phenotype.
 // All the code in this function is executed when "myFirstPhenotype.run()" is executed.
 var myFirstPhenotype = phenotype(function(genome) {
 
-   // The genome() function give a value between 0 and 1 like this: 0.75838726346
+   // The genome() function give a value between 0 and 1 like this: 0.75838726346 to each settings.
 
-    reglage1 = genome(); // 0.683465982345
-    reglage2 = genome(); // 0.234985647634
-    reglage3 = genome(); // 0.977563543322
+    settings_1 = genome(); // 0.683465982345
+    settings_2 = genome(); // 0.234985647634
+    settings_3 = genome(); // 0.977563543322
 
 });
 
-// Executing this line change the value of the three variable. (reglage1, reglage2, reglage3)
+// The execution of this line changes the value of the three settings
 myFirstPhenotype.run();
 
 // This line will adjust the value return by all genome() function using an error.
