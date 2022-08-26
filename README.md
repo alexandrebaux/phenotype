@@ -1,4 +1,4 @@
-# Phenotype
+# phenotype
 
 phenotype is a simple optimization function based on a genetic algorithm.
 
