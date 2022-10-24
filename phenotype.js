@@ -12,20 +12,17 @@ var phenotype = function (ph,opt) {
         };        
         this.rst = function(){ this.it = 0; };
     };
-    // TODO - explain the effect of changing the option 'genlength' ( Length of the genôme )
     var genlength = (opt.genlength) ? opt.genlength : 1;
     var pheno = function(cr) {
         cr.rst();
         ph(cr.dn.bind(cr));
     };
-    // TODO - explain the effect of changing the option 'popsize' ( Number of creature )
     var popsize = (opt.popsize) ? opt.popsize : 100;
     var popu = [];
     var creatid = 0;
     for (let index = 0; index < popsize; index++) {
         popu.push(new Creature());
     }
-    // TODO - explain the effect of changing the option 'mutation' ( Level of detail used for changing a value for a parameter)
     var mutation = (opt.mutation) ? opt.mutation : 1000;
     var gen = 0;
     var setError = function(error) {       
@@ -46,7 +43,6 @@ var phenotype = function (ph,opt) {
                 var nomut = ~~(nkill*0.5);           
                 for (var i = 0; i < nkill; i++) {
                     var ncreature = new Creature();                                  
-                    // TODO - error me if all creature have not the same dna length ?
                     for (var z = 0; z < cadn.length; z+=genlength) {
                         var rind = ~~(nrest*Math.random());
                         for (var b = 0; b < genlength; b++) {
@@ -55,7 +51,6 @@ var phenotype = function (ph,opt) {
                                 v += (Math.random()-0.5)/mutation;
                                 v = Math.max(Math.min(v,1),0);
                             }
-                            // TODO - some time we get null value for a genome
                             ncreature.adn.push(v);
                         }                  
                     }
@@ -71,11 +66,9 @@ var phenotype = function (ph,opt) {
     };
     return {
         score: function (fitness) {
-            // TODO - error message if run was not called.
             setError(1/fitness);
         },
         error:  function (err) {
-            // TODO - error message if run was not called.
             setError(err);
         },
         run: function () {
