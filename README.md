@@ -89,6 +89,7 @@ var calculateDistance = function(cloned_cities) {
 };
 
 var totalDistance = calculateDistance(cities);
+var lastBestDistance = totalDistance;
 
 console.log("Initial Distance", totalDistance);
 
@@ -129,8 +130,13 @@ var loop = function() {
     });
     var bestDistance = calculateDistance(best_cities);
 
-    // Show Best Solution
-    console.log(best_cities, bestDistance);
+    if (lastBestDistance != bestDistance) {
+
+        // Show New Best Solution
+        console.log(best_cities, bestDistance);
+
+        lastBestDistance = bestDistance;
+    }
 
     // Loop
     setTimeout(loop, 1);
