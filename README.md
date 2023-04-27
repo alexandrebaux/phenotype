@@ -78,48 +78,69 @@ var distance = function(city1, city2) {
 };
 
 // Create a phenotype to optimize the route
-var calculateDistance = function() {
-    var totalDistance = 0;
-    for (var i = 0; i < cities.length - 1; i++) {
-        totalDistance += distance(cities[i], cities[i+1]);
+var calculateDistance = function(cloned_cities) {
+    var d = 0;
+    for (var i = 0; i < cloned_cities.length - 1; i++) {
+        d += distance(cloned_cities[i], cities[i+1]);
     }
-    totalDistance += distance(cities[cities.length-1], cities[0]);
+    d += distance(cloned_cities[cloned_cities.length-1], cities[0]);
 
-    return totalDistance;
-
+    return d;
 };
 
-var totalDistance = calculateDistance();
+var totalDistance = calculateDistance(cities);
+
+console.log("Initial Distance", totalDistance);
 
 var tspPhenotype = phenotype(function(genome) {
-   
-    // Rank the cities using the genome as a random seed
+    
+    // We clone cities
+    var cloned_cities = [...cities];
+
+    // Rank cities using the genome as a random seed
     for (var i = 0; i < cities.length; i++) {
-        cities[i].rank = genome();
+        cloned_cities[i].rank = genome();
     }
-    cities.sort(function(a,b) {
+    cloned_cities.sort(function(a,b) {
         return a.rank - b.rank;
     });
-
-    // Calculate the total distance of the route
-    totalDistance = calculateDistance()
     
-}, { popsize: 100, genlength: 1 });
+    // Calculate total distance of the route
+    totalDistance = calculateDistance(cloned_cities);
 
-// Run the optimization 1000 times
-for (var i = 0; i < 1000; i++) {
+});
+
+var loop = function() {
+
+    // Run the phenotype 
     tspPhenotype.run();
 
     // Set the error as the distance (to maximize fitness)
     tspPhenotype.error(totalDistance);
-}
 
-// Get the best route and its distance
-var bestRoute = tspPhenotype.save(); 
-tspPhenotype.load(bestRoute);
-tspPhenotype.run();
+    // Get the best route and its distance
+    var best_cities =  [...cities];
+    var bestRoute = tspPhenotype.save();
+    for (var i = 0; i < bestRoute.length; i++) {
+        if (best_cities[i]) {
+            best_cities[i].rank = bestRoute[i];
+        }
+    }
+    best_cities.sort(function(a,b) {
+        return a.rank - b.rank;
+    });
+    var bestDistance = calculateDistance(best_cities);
 
-var bestDistance = calculateDistance()
-console.log(cities, bestDistance);
+    // Show Best Solution
+    console.log(best_cities, bestDistance);
+
+    setTimeout(function(){
+
+        loop();
+
+    }, 1);
+};
+
+loop();
 
 ```
