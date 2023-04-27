@@ -25,6 +25,8 @@ var phenotype = function (ph,opt) {
     }
     var mutation = (opt.mutation) ? opt.mutation : 1000;
     var gen = 0;
+    var prevError = Infinity;
+    var progressRate = 0;
     var setError = function(error) {       
         var cr = popu[creatid];        
         var errorNumber = Number(error);
@@ -58,11 +60,27 @@ var phenotype = function (ph,opt) {
                     popu.push(ncreature);
                 }
             } 
+            if (creatid === 0) {
+                progressRate = (prevError - popu[0].err) / prevError;
+                prevError = popu[0].err;
+                updateOptions();
+            }
         }     
     };
     var evaluate = function() {  
         var cr = popu[creatid];
         pheno(cr);
+    };
+    var updateOptions = function () {
+        if (progressRate < 0.01) {
+            popsize = Math.min(popsize * 1.1, 200); 
+            mutation = Math.max(mutation * 0.9, 100);
+            genlength = Math.min(genlength * 1.1, 5);
+        } else if (progressRate > 0.1) {
+            popsize = Math.max(popsize * 0.9, 50); 
+            mutation = Math.min(mutation * 1.1, 10000); 
+            genlength = Math.max(genlength * 0.9, 1);
+        }
     };
     return {
         score: function (fitness) {
