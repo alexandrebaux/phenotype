@@ -68,11 +68,11 @@ var phenotype = function (ph,opt) {
                     popu.push(nind);
                 }
             }
-            
+
             if (creatid === 0) {
                 progressRate = (prevError - popu[0].err) / prevError;
                 prevError = popu[0].err;
-                updateOptions();
+                //updateOptions();
             }
         }     
     };
