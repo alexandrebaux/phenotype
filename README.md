@@ -122,9 +122,7 @@ var loop = function() {
     var best_cities =  [...cities];
     var bestRoute = tspPhenotype.save();
     for (var i = 0; i < bestRoute.length; i++) {
-        if (best_cities[i]) {
-            best_cities[i].rank = bestRoute[i];
-        }
+        best_cities[i].rank = bestRoute[i];   
     }
     best_cities.sort(function(a,b) {
         return a.rank - b.rank;
@@ -134,11 +132,8 @@ var loop = function() {
     // Show Best Solution
     console.log(best_cities, bestDistance);
 
-    setTimeout(function(){
-
-        loop();
-
-    }, 1);
+    // Loop
+    setTimeout(loop, 1);
 };
 
 loop();
