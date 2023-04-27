@@ -1,8 +1,10 @@
 var phenotype = function (ph,opt) {    
+
     var opt = (opt) ? opt : {};
-    var lErr = Infinity;
+    
     var rd = function(){ return Math.random(); };
-    var Creature = function() {
+
+    var ind = function() {
         this.it = 0;
         this.adn = [];        
         this.dn = function(){ 
@@ -12,21 +14,27 @@ var phenotype = function (ph,opt) {
         };        
         this.rst = function(){ this.it = 0; };
     };
-    var genlength = (opt.genlength) ? opt.genlength : 1;
+
     var pheno = function(cr) {
         cr.rst();
         ph(cr.dn.bind(cr));
     };
+
+    var lErr = Infinity;
+
+    var genlength = (opt.genlength) ? opt.genlength : 1;
     var popsize = (opt.popsize) ? opt.popsize : 100;
+    var mutation = (opt.mutation) ? opt.mutation : 1000;
+
     var popu = [];
     var creatid = 0;
     for (let index = 0; index < popsize; index++) {
-        popu.push(new Creature());
+        popu.push(new ind());
     }
-    var mutation = (opt.mutation) ? opt.mutation : 1000;
-    var gen = 0;
+    
     var prevError = Infinity;
     var progressRate = 0;
+
     var setError = function(error) {       
         var cr = popu[creatid];        
         var errorNumber = Number(error);
@@ -44,7 +52,7 @@ var phenotype = function (ph,opt) {
                 var cadn = popu[0].adn;
                 var nomut = ~~(nkill*0.5);           
                 for (var i = 0; i < nkill; i++) {
-                    var ncreature = new Creature();                                  
+                    var nind = new ind();                                  
                     for (var z = 0; z < cadn.length; z+=genlength) {
                         var rind = ~~(nrest*Math.random());
                         for (var b = 0; b < genlength; b++) {
@@ -53,13 +61,14 @@ var phenotype = function (ph,opt) {
                                 v += (Math.random()-0.5)/mutation;
                                 v = Math.max(Math.min(v,1),0);
                             }
-                            ncreature.adn.push(v);
+                            nind.adn.push(v);
                         }                  
                     }
-                    ncreature.err = lErr;
-                    popu.push(ncreature);
+                    nind.err = lErr;
+                    popu.push(nind);
                 }
-            } 
+            }
+            
             if (creatid === 0) {
                 progressRate = (prevError - popu[0].err) / prevError;
                 prevError = popu[0].err;
@@ -67,10 +76,12 @@ var phenotype = function (ph,opt) {
             }
         }     
     };
+
     var evaluate = function() {  
         var cr = popu[creatid];
         pheno(cr);
     };
+
     var updateOptions = function () {
         if (progressRate < 0.01) {
             popsize = Math.min(popsize * 1.1, 200); 
@@ -82,6 +93,7 @@ var phenotype = function (ph,opt) {
             genlength = Math.max(genlength * 0.9, 1);
         }
     };
+
     return {
         score: function (fitness) {
             setError(1/fitness);
@@ -93,6 +105,9 @@ var phenotype = function (ph,opt) {
             evaluate();
         },
         save: function () {
+            popu.sort(function (a, b) {
+                return a.err - b.err;
+            });
             return popu[0].adn;
         },
         load: function (adn) {
