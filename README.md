@@ -58,10 +58,16 @@ The Traveling Salesman Problem (TSP) is a classic optimization problem where a s
 ```javascript
 // Define the cities and their coordinates
 var cities = [
-    { id:"city_a", x: 0, y: 0 },
-    { id:"city_b", x: 1, y: 2 },
-    { id:"city_c", x: 3, y: 1 },
-    { id:"city_d", x: 20, y: 3 }
+    {"id":"city_1","x":39,"y":37},
+    {"id":"city_2","x":14,"y":35},
+    {"id":"city_3","x":36,"y":7},
+    {"id":"city_4","x":67,"y":88},
+    {"id":"city_5","x":85,"y":53},
+    {"id":"city_6","x":23,"y":55},
+    {"id":"city_7","x":94,"y":49},
+    {"id":"city_8","x":40,"y":74},
+    {"id":"city_9","x":16,"y":23},
+    {"id":"city_10","x":86,"y":65}
 ];
 
 // Define the distance function between two cities
