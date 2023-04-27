@@ -78,12 +78,12 @@ var distance = function(city1, city2) {
 };
 
 // Create a phenotype to optimize the route
-var calculateDistance = function(cloned_cities) {
+var calculateDistance = function(points) {
     var d = 0;
-    for (var i = 0; i < cloned_cities.length - 1; i++) {
-        d += distance(cloned_cities[i], cities[i+1]);
+    for (var i = 0; i < points.length - 1; i++) {
+        d += distance(points[i], points[i+1]);
     }
-    d += distance(cloned_cities[cloned_cities.length-1], cities[0]);
+    d += distance(points[points.length-1], points[0]);
 
     return d;
 };
