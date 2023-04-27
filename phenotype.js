@@ -6,7 +6,7 @@ var phenotype = function (ph,opt) {
         this.it = 0;
         this.adn = [];        
         this.dn = function(){ 
-            if (!this.adn[this.it]) { this.adn.push(rd()); }
+            if (!this.adn[this.it]) { this.adn[this.it] = rd(); }
             var r = this.adn[this.it]; this.it++;
             return r;
         };        
