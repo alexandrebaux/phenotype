@@ -30,7 +30,7 @@ for (var i=0; i < 10000; i++) {
 
 }
 
-console.log(currentValue); // 1990
+console.log(currentValue); // 12345
 
 ```
 
