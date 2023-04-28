@@ -20,59 +20,65 @@ var phenotype = function (ph,opt) {
         ph(cr.dn.bind(cr));
     };
 
-    var lErr = Infinity;
-
-    var genlength = (opt.genlength) ? opt.genlength : 1;
-    var popsize = (opt.popsize) ? opt.popsize : 100;
-    var mutation = (opt.mutation) ? opt.mutation : 1000;
-
-    var popu = [];
-    var creatid = 0;
-    for (let index = 0; index < popsize; index++) {
-        popu.push(new ind());
+    function calculateStep(cadnLength, genlength) {
+        for (var i = genlength; i > 0; i--) {
+            if (cadnLength % i == 0) {
+                return i;
+            }
+        }
+        return 1;
     }
-    
-    var prevError = Infinity;
-    var progressRate = 0;
 
-    var setError = function(error) {       
+    var setError = function(error) {   
+
         var cr = popu[creatid];        
         var errorNumber = Number(error);
+
         if (errorNumber !== NaN) {            
             cr.err = errorNumber;
             creatid++;
+
             if (creatid >= popu.length) {
-                creatid = 0;
-                popu.sort(function(a,b) { return a.err - b.err; });
-                var nkill = ~~(popu.length*0.5);
-                for (var i = 0; i < nkill; i++) { 
-                    popu.pop();
-                }
-                var nrest = popu.length;
+
                 var cadn = popu[0].adn;
-                var nomut = ~~(nkill*0.5);           
+                var nkill = ~~(popu.length*0.5);
+                var nomut = ~~(nkill*0.5);   
+                
+                popu.sort(function(a,b) { return a.err - b.err; });
+                popu.splice(popu.length - nkill, nkill); 
+
+                var nrest = popu.length;
+                        
                 for (var i = 0; i < nkill; i++) {
-                    var nind = new ind();                                  
-                    for (var z = 0; z < cadn.length; z+=genlength) {
+
+                    var nind = new ind(); 
+
+                    var step = calculateStep(cadn.length, genlength);
+
+                    for (var z = 0; z < cadn.length; z+=step) {
                         var rind = ~~(nrest*Math.random());
-                        for (var b = 0; b < genlength; b++) {
-                            var v = popu[rind].adn[z+b];                  
-                            if (i > nomut && Math.random() > 0.9) {
-                                v += (Math.random()-0.5)/mutation;
-                                v = Math.max(Math.min(v,1),0);
+                        for (var b = 0; b < step; b++) {
+                            if (z+b < cadn.length) {
+                                var v = popu[rind].adn[z+b];                  
+                                if (i > nomut && Math.random() > 0.5) {
+                                    v += (Math.random()-0.5)/mutation;
+                                    v = Math.max(Math.min(v,1),0);
+                                }
+                                nind.adn.push(v);
                             }
-                            nind.adn.push(v);
                         }                  
                     }
+                    
                     nind.err = lErr;
                     popu.push(nind);
                 }
-            }
 
-            if (creatid === 0) {
+                creatid = 0;
                 progressRate = (prevError - popu[0].err) / prevError;
                 prevError = popu[0].err;
-                //updateOptions();
+
+                updateOptions();
+
             }
         }     
     };
@@ -84,15 +90,29 @@ var phenotype = function (ph,opt) {
 
     var updateOptions = function () {
         if (progressRate < 0.01) {
-            popsize = Math.min(popsize * 1.1, 200); 
-            mutation = Math.max(mutation * 0.9, 100);
+            popsize = Math.min(popsize * 1.1, 10000); 
+            mutation = Math.max(mutation * 0.9, 10);
             genlength = Math.min(genlength * 1.1, 5);
         } else if (progressRate > 0.1) {
-            popsize = Math.max(popsize * 0.9, 50); 
-            mutation = Math.min(mutation * 1.1, 10000); 
+            popsize = Math.max(popsize * 0.9, 10); 
+            mutation = Math.min(mutation * 1.1, 100000); 
             genlength = Math.max(genlength * 0.9, 1);
         }
     };
+
+    var lErr = Infinity;
+    var prevError = Infinity;
+    var progressRate = 0;
+
+    var genlength = (opt.genlength) ? opt.genlength : 1;
+    var popsize = (opt.popsize) ? opt.popsize : 100;
+    var mutation = (opt.mutation) ? opt.mutation : 1000;
+
+    var popu = [];
+    var creatid = 0;
+    for (let index = 0; index < popsize; index++) {
+        popu.push(new ind());
+    }
 
     return {
         score: function (fitness) {
