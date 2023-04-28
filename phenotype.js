@@ -20,7 +20,7 @@ var phenotype = function (ph,opt) {
         ph(cr.dn.bind(cr));
     };
 
-    function calculateStep(cadnLength, genlength) {
+    var calculateStep = function (cadnLength, genlength) {
         for (var i = genlength; i > 0; i--) {
             if (cadnLength % i == 0) {
                 return i;
