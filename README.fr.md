@@ -1,5 +1,6 @@
-[![fr](https://img.shields.io/badge/lang-fr-green.svg)](https://github.com/alexandrebaux/phenotype/blob/master/README.fr.md)
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/alexandrebaux/phenotype/blob/master/README.md)
+[![fr](https://img.shields.io/badge/lang-fr-green.svg)](https://github.com/alexandrebaux/phenotype/blob/master/README.fr.md)
+
 
 # Lisez-moi
 
@@ -58,7 +59,7 @@ console.log(currentValue); // 12345
 Le problème du voyageur de commerce (TSP) est un problème d'optimisation classique dans lequel un vendeur doit visiter un ensemble de villes, en visitant chaque ville exactement une fois, et revenir à la ville de départ dans le plus court chemin possible. Voici un exemple d'utilisation du script phénotype pour résoudre le TSP :
 
 ```javascript
-// Define the cities and their coordinates
+// Définir les villes et leurs coordonnées
 var cities = [
     {"id":"city_1","x":39,"y":37},
     {"id":"city_2","x":14,"y":35},
@@ -72,14 +73,14 @@ var cities = [
     {"id":"city_10","x":86,"y":65}
 ];
 
-// Define the distance function between two cities
+// Définir la fonction de distance entre deux villes
 var distance = function(city1, city2) {
     var dx = city1.x - city2.x;
     var dy = city1.y - city2.y;
     return Math.sqrt(dx*dx + dy*dy);
 };
 
-// Create a phenotype to optimize the route
+// Créer un phénotype pour optimiser l'itinéraire
 var calculateDistance = function(points) {
     var d = 0;
     for (var i = 0; i < points.length - 1; i++) {
@@ -93,14 +94,14 @@ var calculateDistance = function(points) {
 var totalDistance = calculateDistance(cities);
 var lastBestDistance = totalDistance;
 
-console.log("Initial Distance", totalDistance);
+console.log("Distance Initiale", totalDistance);
 
 var tspPhenotype = phenotype(function(genome) {
     
-    // We clone cities
+    // Nous clonons les villes
     var cloned_cities = [...cities];
 
-    // Rank cities using the genome as a random seed
+    // Classer les villes en utilisant le génome comme graine aléatoire
     for (var i = 0; i < cities.length; i++) {
         cloned_cities[i].rank = genome();
     }
@@ -108,20 +109,20 @@ var tspPhenotype = phenotype(function(genome) {
         return a.rank - b.rank;
     });
     
-    // Calculate total distance of the route
+    // Calculer la distance totale du parcours
     totalDistance = calculateDistance(cloned_cities);
 
 });
 
 var loop = function() {
 
-    // Run the phenotype 
+    // Exécuter le phénotype 
     tspPhenotype.run();
 
-    // Set the error as the distance (to maximize fitness)
+    // Définir l'erreur comme la distance (pour maximiser la fitness)
     tspPhenotype.error(totalDistance);
 
-    // Get the best route and its distance
+    // Obtenir le meilleur itinéraire et sa distance
     var best_cities =  [...cities];
     var bestRoute = tspPhenotype.save();
     for (var i = 0; i < bestRoute.length; i++) {
@@ -134,13 +135,13 @@ var loop = function() {
 
     if (lastBestDistance != bestDistance) {
 
-        // Show New Best Solution
+        // Afficher la nouvelle meilleure solution
         console.log(best_cities, bestDistance);
 
         lastBestDistance = bestDistance;
     }
 
-    // Loop
+    // Boucler
     setTimeout(loop, 1);
 };
 
