@@ -1,5 +1,7 @@
 # README
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/alexandrebaux/phenotype/blob/master/README.md)
+
 Phenotype is a JavaScript script that implements a genetic algorithm to optimize a given phenotype. The phenotype to be optimized is passed as a function, along with optional parameters for the genetic algorithm.
 
 The script creates a population of creatures, each with a randomly generated genetic sequence. The creatures are evaluated based on their fitness to the given phenotype, and the genetic sequence of the most fit creature is used to create a new generation of creatures with variations on the original genetic sequence. This process is repeated until the population converges on a solution.
