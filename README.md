@@ -1,7 +1,7 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/alexandrebaux/phenotype/blob/master/README.md)
 [![fr](https://img.shields.io/badge/lang-fr-green.svg)](https://github.com/alexandrebaux/phenotype/blob/master/README.fr.md)
 
-# README
+# Read me
 
 Phenotype is a JavaScript script that implements a genetic algorithm to optimize a given phenotype. The phenotype to be optimized is passed as a function, along with optional parameters for the genetic algorithm.
 
